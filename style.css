@@ -1,0 +1,230 @@
+.slogan {
+    font-family: 'Rubik Bubbles', sans-serif;
+    font-weight: 400;
+    font-size: 50px;
+    color: rgb(153, 117, 76);
+    margin-right: 200px;
+}
+
+body {
+    background-color: #ffffff;
+    margin: 0;
+    font-weight: 400;
+}
+
+.header {
+    background-color: #151d20;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    width: 170px; 
+    height: 150px;
+    margin-left: 100px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: inline-flex;
+    justify-content: space-between; 
+}
+
+.nav ul li {
+    flex-grow: 1; 
+    text-align: center; 
+}
+
+.nav ul li a {
+    height: 30px; 
+    padding: 30px 30px; 
+    font-size: 25px; 
+    display: inline-block;
+    transition: background-color ease 0.5s;
+    font-family: 'Rubik Bubbles', sans-serif;
+}
+
+.nav ul li a:link,
+.nav ul li a:visited {
+    color: #fff;
+    text-decoration: none;
+}
+
+.nav ul li a:hover {
+    background-color: red;
+}
+
+.nav ul li a:active {
+    text-decoration: underline;
+    background-color: #999;
+    color: black;
+}
+
+.nav ul li a.active {
+    text-decoration: underline;
+}
+
+.central {
+    height: 600px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.gallery {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+.gallery a {
+    text-decoration: none;
+    color: inherit;
+    text-align: center;
+    position: relative;
+    flex: 0 0 calc(20% - 20px);
+    margin: 0 10px;
+}
+
+.gallery img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.gallery span {
+    display: block;
+    margin-top: 5px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.gallery a:hover {
+    opacity: 0.8;
+    transform: scale(1.1);
+    transition: transform 0.5s ease-in-out;
+}
+
+.gallery a:hover span {
+    text-decoration: underline;
+}
+
+.footer {
+    background-color: #333;
+    padding: 5px;
+    margin-top: 15px;
+    color: #fff;
+    height: 500px; 
+}
+
+.footer .left {
+    text-align: left;
+    position: absolute;
+    margin-top: 30px;
+    margin-left: 70px;
+    font-family: 'Rubik Bubbles', sans-serif;
+    color: burlywood;
+}
+
+.footer .left h2 {
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.footer .left p {
+    font-size: 30px; 
+    color: #9c1f44;
+    font-family: 'Rubik Bubbles', sans-serif; 
+    text-align: center;
+}
+
+.footer .left h3 {
+    font-size: 25px;
+    font-weight: 100;
+    text-align: center;
+    color: rgb(175, 207, 33);
+}
+
+.footer .right {
+    margin-top: 65px;
+    text-align: right;
+    position: inherit;
+    margin-right: 70px;
+    font-family: 'Rubik Bubbles', sans-serif;
+    color: burlywood;
+}
+
+.footer .right h2 {
+    margin-top: 10px;
+    font-size: 40px;
+    font-weight: 400;
+}
+
+.footer .right p {
+    font-size: 30px; 
+    color: #9c1f44;
+    font-family: 'Rubik Bubbles', sans-serif; 
+    margin-right: 80px;
+}
+
+.map {
+    position: relative;
+    left: 50%;  
+    transform: translateX(-50%);
+    width: calc(100% - 40px); 
+    max-width: 800px; 
+    height: 300px;
+    overflow: hidden; 
+    margin-top: -110px;
+    margin-bottom: 30px;
+}
+
+.map iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.central .adresa {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.central .adresa .mapa h3 {
+    font-family: 'Rubik Bubbles', sans-serif;
+    font-weight: 400;
+    font-size: 50px;
+    color: rgb(153, 117, 76);
+    padding-left: 100px;  
+    margin-top: 100px;
+}
+
+.central .adresa .mapa h2 {
+    text-align: center;
+    margin-left: 100px;
+    font-size: 30px; 
+    color: #9c1f44;
+    font-family: 'Rubik Bubbles', sans-serif; 
+    text-align: center;
+    font-weight: 200;
+}
+
+.central .cislo .tel {
+    margin-right: 100px;
+    margin-top: 100px;
+}
+
+.central .cislo .tel h1 {
+    font-size: 30px;
+    font-family: 'Rubik Bubbles', sans-serif; 
+    text-align: center;
+    font-weight: 200;
+}
