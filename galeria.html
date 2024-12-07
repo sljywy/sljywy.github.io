@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GTIFAB S.R.O</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="styles2.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">
+                <span>GTIFAB S.R.O</span>
+            </div>
+            <!-- <div class="logoimg">
+                <img src="logo.png" alt="Company logo">
+            </div> -->
+            <div class="hamburger" id="hamburger">
+            &#9776;
+        </div>
+        <nav id="navbar">
+            <ul>
+                <li><a href="index.html#home">Domov</a></li>
+                <li><a href="index.html#services">Služby</a></li>
+                <li><a href="index.html#about">O nás</a></li>
+                <li><a href="index.html#contact">Kontakt</a></li>
+                <li><a href="galeria.html">Galeria</a></li>
+            </ul>
+        </nav>
+        </div>
+
+    </header>
+    <div class="row">
+        <div class="column">
+            <img src="(1).webp">
+            <img src="(2).webp">
+            <img src="(3).webp">
+            <img src="(4).webp">
+            <img src="(5).webp">
+            <img src="(6).webp">
+            <img src="(7).webp">
+            <img src="(8).webp">
+            <img src="(9).webp">
+            <img src="(10).webp">
+            <img src="(11).webp">
+            <img src="(12).webp">
+            <img src="(13).webp">
+            <img src="(14).webp">
+            <img src="(15).webp">
+            <img src="(16).webp">
+        </div>
+        <div class="column">
+            <img src="(17).webp">
+            <img src="(18).webp">
+            <!-- <img src="(19).webp"> -->
+            <img src="(20).webp">
+            <img src="(21).webp">
+            <img src="(22).webp">
+            <img src="(23).webp">
+            <img src="(24).webp">
+            <img src="(25).webp">
+            <img src="(26).webp">
+            <img src="(27).webp">
+            <img src="(28).webp">
+            <img src="(29).webp">
+            <img src="(30).webp">
+            <img src="(31).webp">
+            <img src="(32).webp">
+        </div>
+        <div class="column">
+            <img src="(33).webp">
+            <img src="(34).webp">
+            <img src="(35).webp">
+            <img src="(36).webp">
+            <img src="(37).webp">
+            <img src="(38).webp">
+            <img src="(39).webp">
+            <img src="(40).webp">
+            <img src="(41).webp">
+            <img src="(42).webp">
+            <img src="(43).webp">
+            <img src="(44).webp">
+            <img src="(45).webp">
+            <img src="(46).webp">
+            <img src="(47).webp">
+            
+        </div>
+        <div class="column">
+            <img src="(49).webp">
+            <img src="(50).webp">
+            <img src="(51).webp">
+            <img src="(52).webp">
+            <img src="(53).webp">
+            <img src="(54).webp">
+            <img src="(55).webp">
+            <img src="(56).webp">
+            <img src="(57).webp">
+            <img src="(58).webp">
+            <img src="(59).webp">
+            <img src="(60).webp">
+            <img src="(61).webp">
+            <img src="(62).webp">
+            <img src="(63).webp">
+            <img src="(64).webp">
+            <img src="(48).webp">
+        </div>
+
+    </div>
+    </section>
+
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 GTIFAB S.R.O. Všetky práva vyhradené.</p>
+        </div>
+    </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const hamburger = document.querySelector('.hamburger');
+            const navMenu = document.querySelector('#navbar');
+            const navLinks = document.querySelectorAll('#navbar ul li a');
+
+            hamburger.addEventListener('click', function () {
+                navMenu.classList.toggle('active');
+                this.setAttribute('aria-expanded', navMenu.classList.contains('active'));
+            });
+
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function () {
+                    navMenu.classList.remove('active');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
+
+            if (window.innerWidth <= 768) {
+                document.querySelectorAll('.service-card').forEach(card => {
+                    card.addEventListener('click', function () {
+                        const moreInfo = this.querySelector('.more-info');
+                        if (moreInfo) {
+                            moreInfo.classList.toggle('visible');
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
