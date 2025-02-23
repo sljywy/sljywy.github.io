@@ -20,6 +20,7 @@ body {
     width: 90%;
     max-width: 1200px;
     margin: 0 auto;
+    /*position: relative;*/
 }
 
 
@@ -40,14 +41,15 @@ header .container {
     align-items: center;
 }
 
-header .logo {
+header {
     font-size: 24px;
     font-weight: 700;
 }
 
-.logoimg img {
+.logo {
     height: 30px;
-    width: 70px;
+    width: 70x;
+    display: block;
 }
 
 nav ul {
@@ -412,30 +414,52 @@ footer .social-links a:hover img {
     display: none;
 }
 
+#navbar {
+    text-align: center;
+}
+
 @media screen and (max-width: 800px) {
     .column {
         flex: 50%;
         max-width: 50%;
     }
+    /*
+    .logo {
+        display: none;
+    }
+        */
+  
 }
 
 @media screen and (max-width: 600px) {
     .column {
         flex: 100%;
         max-width: 100%;
+        
     }
+    /*
+    .logo {
+        display: none;
+    }
+    */
 
     .contact-info {
         font-size: 14px;
         align-items: center;
         text-align: center;
     }
+    
 }
 
 @media (max-width: 768px) {
     .services-grid {
         grid-template-columns: repeat(2, 1fr);  
     }
+    /*
+    .logo {
+        display: none;
+    }
+   */
 
     .contact-info {
         font-size: 14px;
@@ -446,6 +470,8 @@ footer .social-links a:hover img {
 
     .hamburger {
         display: block;
+        margin-left: auto;
+
     }
 
     nav {
@@ -478,6 +504,11 @@ footer .social-links a:hover img {
         grid-template-columns: 1fr;
        
     }
+    /*
+    .logo {
+        display: none;
+    }
+    */
 
     .contact-info {
         font-size: 14px;
