@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="sk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gtifab s.r.o.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <!-- Figtree font -->
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#2563eb',
+                        secondary: '#1e40af',
+                        accent: '#f59e0b',
+                        dark: '#1e293b',
+                    },
+                    fontFamily: {
+                        sans: ['Figtree', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .hero-image {
+            background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2)), url('https://images.unsplash.com/photo-1493238792000-8113da705763?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .nav-link:after {
+            content: '';
+            display: block;
+            width: 0;
+            height: 2px;
+            background: #f59e0b;
+            transition: width .3s;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .mobile-menu.open {
+            max-height: 500px;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 40;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Lightbox za galeriju */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+        }
+
+        .lightbox.show {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 95vw;
+            max-height: 95vh;
+            object-fit: contain;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            transition: transform 0.3s ease;
+        }
+
+        .lightbox img:hover {
+            transform: scale(1.05);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 50px;
+            cursor: pointer;
+            text-shadow: 0 0 10px black;
+            transition: transform 0.2s;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2);
+        }
+
+        #gallery img {
+            cursor: zoom-in;
+        }
+
+        @media (max-width: 768px) {
+            #contact .grid > div {
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+
+<body class="font-sans antialiased text-gray-900">
+
+    <!-- Header -->
+    <header class="bg-amber-60/90 backdrop-blur-md shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center">
+                <img src="logo.png" alt="Logo" class="h-10 mr-3">
+                <span class="text-2xl font-bold text-dark">gtifab<span class="text-accent"> s.r.o.</span></span>
+            </a>
+
+            <nav class="hidden md:flex space-x-8">
+                <a href="#home" class="nav-link font-medium">Domov</a>
+                <a href="#services" class="nav-link font-medium">Služby</a>
+                <a href="#about" class="nav-link font-medium">O nás</a>
+                <a href="#gallery" class="nav-link font-medium">Galéria</a>
+                <a href="#contact" class="nav-link font-medium">Kontakt</a>
+            </nav>
+
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-dark focus:outline-none">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <div id="mobile-menu" class="mobile-menu md:hidden bg-white w-full px-4 shadow-lg">
+            <div class="flex flex-col space-y-4 py-4">
+                <a href="#home" class="font-medium border-b pb-2">Domov</a>
+                <a href="#services" class="font-medium border-b pb-2">Služby</a>
+                <a href="#about" class="font-medium border-b pb-2">O nás</a>
+                <a href="#gallery" class="font-medium border-b pb-2">Galéria</a>
+                <a href="#contact" class="font-medium border-b pb-2">Kontakt</a>
+                <a href="tel:+421910870807" class="bg-primary text-white py-2 px-4 rounded text-center font-bold">
+                    <i class="fas fa-phone mr-2"></i> Volať
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Overlay za mobilni meni -->
+    <div id="mobile-overlay" class="mobile-overlay"></div>
+
+    <!-- Hero -->
+    <section id="home" class="hero-image min-h-[70vh] flex items-center">
+        <div class="container mx-auto px-4">
+            <div class="max-w-xl text-white">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+                    <span id="typewriter"></span><span id="cursor">_</span>
+                </h1>
+                <p class="text-xl mb-8">S nami sa vaše vozidlo dostane do rúk skúsených odborníkov, ktorí sa postarajú o každý detail. Vaša spokojnosť je našou prioritou.</p>
+                <a href="tel:+421910870807" class="border-2 border-white hover:bg-white hover:text-dark text-white font-bold py-3 px-6 rounded-lg transition">
+                    <i class="fas fa-phone mr-2"></i> Volať
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
+                    <div class="bg-primary rounded-full p-4 mr-4"><i class="fas fa-clock text-white text-2xl"></i></div>
+                    <div>
+                        <h3 class="font-bold text-xl mb-2">Rýchla obsluha</h3>
+                        <p class="text-gray-600">Pre väčšinu rýchlych opráv je k dispozícii služba v ten istý deň.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
+                    <div class="bg-primary rounded-full p-4 mr-4"><i class="fas fa-shield-alt text-white text-2xl"></i></div>
+                    <div>
+                        <h3 class="font-bold text-xl mb-2">24-mesačná záruka na náhradné diely</h3>
+                        <p class="text-gray-600">Všetky naše opravy sú so zárukou kvality.</p>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md flex items-center">
+                    <div class="bg-primary rounded-full p-4 mr-4"><i class="fas fa-user-tie text-white text-2xl"></i></div>
+                    <div>
+                        <h3 class="font-bold text-xl mb-2">Certifikovaní odborníci</h3>
+                        <p class="text-gray-600">Vysoko kvalifikovaní technici s viac ako 18 rokmi skúseností.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-dark">Naše služby</h2>
+                <div class="h-1 w-24 bg-accent mx-auto mb-8"></div>
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
+                    Ponúkame komplexné opravy automobilov, aby sme udržali vaše vozidlo v perfektnom stave.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="h-48 overflow-hidden"><img src="autoservis.webp" alt="" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Autoservis</h3>
+                        <p class="text-gray-600 mb-4">Diagnostika vozidla</p>
+                        <a href="#" data-modal="modal-0" class="text-primary font-semibold flex items-center open-modal">
+                            Zistite viac <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="h-48 overflow-hidden"><img src="elektroservis.webp" alt="" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Elektroservis</h3>
+                        <p class="text-gray-600 mb-4">Diagnostika vozidla</p>
+                        <a href="#" data-modal="modal-1" class="text-primary font-semibold flex items-center open-modal">
+                            Zistite viac <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="h-48 overflow-hidden"><img src="chip.webp" alt="" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Chiptuning - Úprava RJ</h3>
+                        <p class="text-gray-600 mb-4">Vozidlá - Osobné, Dodávky, Kamión, Motorky, Lode, Traktory, Bágery, Autobusy</p>
+                        <a href="#" data-modal="modal-2" class="text-primary font-semibold flex items-center open-modal">
+                            Zistite viac <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="h-48 overflow-hidden"><img src="kodovanie.webp" alt="" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Kódovanie</h3>
+                        <p class="text-gray-600 mb-4">Volkswagen, Audi, BMW, MINI, Toyota, Škoda, SEAT/CUPRA, Lamborghini, Bentley, Lexus, Rolls-Royce a Mercedes-Benz</p>
+                        <a href="#" data-modal="modal-3" class="text-primary font-semibold flex items-center open-modal">
+                            Zistite viac <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="h-48 overflow-hidden"><img src="otah.webp" alt="" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Odťahová služba</h3>
+                        <p class="text-gray-600 mb-4">Odťahové služby v rámci EU a mimo EU 3500kg</p>
+                        <a href="#" data-modal="modal-4" class="text-primary font-semibold flex items-center open-modal">
+                            Zistite viac <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="service-card bg-white rounded-lg overflow-hidden shadow-md transition duration-300 hover:shadow-xl">
+                    <div class="h-48 overflow-hidden"><img src="stk.webp" alt="" class="w-full h-full object-cover"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">ZABEZPEČENIE STK/EK</h3>
+                        <p class="text-gray-600 mb-4">PRÍPRAVA VOZIDLA NA STK/EK</p>
+                        <a href="#" data-modal="modal-5" class="text-primary font-semibold flex items-center open-modal">
+                            Zistite viac <i class="fas fa-arrow-right ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section – sve centrirano -->
+    <section id="about" class="py-20 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-dark">O nás</h2>
+                <div class="h-1 w-24 bg-accent mx-auto mb-8"></div>
+
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
+                    Vítame Vás v našom autoservise, robíme komplexnú starostlivosť o vaše vozidlo!
+                    Ponúkame širokú škálu služieb vrátane rôznych typov opráv, elektroservisu, odťahovej služby
+                    a softvérovej úpravy riadiacich jednotiek.
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+                    <div class="flex items-center justify-center gap-4 bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-primary rounded-full p-4 flex-shrink-0">
+                            <i class="fas fa-check text-white text-2xl"></i>
+                        </div>
+                        <span class="font-semibold text-lg">Najnovšie vybavenie</span>
+                    </div>
+
+                    <div class="flex items-center justify-center gap-4 bg-white p-6 rounded-xl shadow-md">
+                        <div class="bg-primary rounded-full p-4 flex-shrink-0">
+                            <i class="fas fa-check text-white text-2xl"></i>
+                        </div>
+                        <span class="font-semibold text-lg">Kvalitné diely</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="py-16 bg-primary text-white">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+                <div class="p-6">
+                    <div class="text-4xl font-bold mb-2">15,000+</div>
+                    <div class="text-gray-200">Vozidlá servisované</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold mb-2">18</div>
+                    <div class="text-gray-200">Roky skúseností</div>
+                </div>
+                <div class="p-6">
+                    <div class="text-4xl font-bold mb-2">100%</div>
+                    <div class="text-gray-200">Záruka spokojnosti</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery – pametna verzija sa 6 slika + Prikaži više / Sakrij -->
+    <section id="gallery" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-dark">Galéria našej práce</h2>
+                <div class="h-1 w-24 bg-accent mx-auto mb-8"></div>
+                <p class="text-base md:text-lg text-gray-700 leading-relaxed mb-8 max-w-3xl mx-auto">
+                    Pozrite si niektoré z našich nedávnych projektov a kvalitnú prácu, ktorú odvádzame.
+                </p>
+            </div>
+
+            <!-- Grid za slike -->
+            <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+
+            <!-- Dugme -->
+            <div class="text-center mt-10">
+                <button id="toggle-gallery-btn"
+                    class="bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 flex items-center mx-auto">
+                    Prikaži više
+                    <i class="fas fa-chevron-down ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="py-20 bg-dark text-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-4xl mx-auto">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-white">Kontaktujte nás</h2>
+                <div class="h-1 w-24 bg-accent mx-auto mb-8"></div>
+                <p class="text-base md:text-lg text-gray-300 leading-relaxed mb-8 max-w-3xl mx-auto">
+                    Kontaktujte nás a dohodnite si stretnutie alebo sa opýtajte na čokoľvek o našich službách.
+                </p>
+            </div>
+
+            <div class="max-w-5xl mx-auto">
+                <div class="bg-gray-800/80 backdrop-blur-sm p-10 md:p-12 rounded-2xl shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 border border-gray-700">
+                    <!-- Leva strana -->
+                    <div class="text-center md:text-left space-y-10 flex flex-col justify-center">
+                        <div class="flex items-start justify-center md:justify-start gap-6">
+                            <div class="text-accent text-3xl mt-1 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-2xl mb-3">Adresa</h4>
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    Pšeničná 12027/7A<br>
+                                    821 06 Bratislava
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start justify-center md:justify-start gap-6">
+                            <div class="text-accent text-3xl mt-1 flex-shrink-0">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-2xl mb-3">Otváracie hodiny</h4>
+                                <p class="text-base leading-relaxed text-gray-300">
+                                    Pon - Pia: 08:00 - 16:00<br>
+                                    Sobota: 08:00 - 14:00<br>
+                                    Nedeľa: Zatvorené
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Desna strana -->
+                    <div class="text-center md:text-left space-y-10 flex flex-col justify-center">
+                        <div class="flex items-start justify-center md:justify-start gap-6">
+                            <div class="text-accent text-3xl mt-1 flex-shrink-0">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-2xl mb-3">Zavolajte nám</h4>
+                                <a href="tel:+421910870807" class="text-base hover:text-accent transition font-medium">
+                                    +421 910 870 807
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start justify-center md:justify-start gap-6">
+                            <div class="text-accent text-3xl mt-1 flex-shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-2xl mb-3">Email</h4>
+                                <a href="mailto:gtifabsro@gmail.com" class="text-base hover:text-accent transition font-medium break-all md:break-normal">
+                                    gtifabsro@gmail.com
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map -->
+    <div class="h-[500px] w-full">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d17612.897000211604!2d17.19062!3d48.174977!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x476c8f63a1fe2a77%3A0x87b1bb7f0c8597d8!2sgtifab%20s.r.o.!5e1!3m2!1ssk!2ssk!4v1749906591564!5m2!1ssk!2ssk" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8">
+                <div class="flex items-center space-x-3">
+                    <img src="logo.png" alt="Logo" class="h-10">
+                    <span class="text-2xl font-bold">gtifab <span class="text-accent">s.r.o.</span></span>
+                </div>
+                <p class="text-gray-400">© 2025 gtifab s.r.o. – Všetky práva vyhradené.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Lightbox za galeriju -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">×</span>
+        <img id="lightbox-img" src="" alt="Povećana slika">
+    </div>
+
+    <!-- Modali (isti kao prije) -->
+    <div id="modal-0" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Autoservis</h2>
+            <p class="text-gray-700 mb-4">►Výmena oleja v motore, automatickej prevodovke, diferenciali, rozvodovke<br>►Výmena brzdových platničiek aj s elektronickou brzdou<br>►Výmena brzdových kotúčov<br>►Výmena brzdovej kvapaliny<br>►Kontrola vozidla / naprav/ unik oleja/ unik chladiacej kvapaliny<br>►Čistenie DPF/FAP filtra<br>►Demontáž/Montáž DPF/FAP filtra<br>►Výmena vodného čerpadla/termostatu<br>►Výmena rozvodov<br>►Výmena žhavičov/sviečok<br>►Výmena vstrekovačov<br>►Kontrola vstrekovačov<br>►Výmena výfukov<br>►Demontáž/Montáž/Výmena štartéra/ alternátora<br>►Prezutie/vyváženie kolies</p>
+        </div>
+    </div>
+
+    <div id="modal-1" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Elektroservis</h2>
+            <p class="text-gray-700 mb-4">►Kalibrácia podvozku AIRMATIC/Vzduchový podvozok<br>►Výmena kompresora AIRMATiC<br>►Adaptácia škrtiacej klapky<br>►Adaptácia EGR/AGR, DPF/FAP. Snímač tlaku DPF/FAP<br>►Adaptácia Automatickej prevodovky<br>►Adaptácia snímača natočenia uhla volantu<br>►Regenerácia DPF/FAP filtra<br>►Výmena NOx senzora<br>►Reset servisného intervalu<br>►Test akumulátora a batérií/protokol</p>
+        </div>
+    </div>
+
+    <div id="modal-2" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Chiptuning - Úprava RJ</h2>
+            <p class="text-gray-700 mb-4">
+                ►ADBLUE <span style="color: red;">off</span><br>
+                ►DPF <span style="color: red;">off</span><br>
+                ►EGR / AGR <span style="color: red;">off</span><br>
+                ►IMMO <span style="color: red;">off</span><br>
+                ►TVA <span style="color: red;">off</span> / Škrtiaca klapka<br>
+                ►KATALYZÁTOR <span style="color: red;">off</span><br>
+                ►START/STOP <span style="color: red;">off</span><br>
+                ►LAMBDA SONDA <span style="color: red;">off</span><br>
+                ►DTC kódy <span style="color: red;">off</span><br>
+                ►MAF <span style="color: red;">off</span> / Prietokomer vzduchu<br>
+                ►LAUNCH CONTROL<br>
+                ►VIRIVÉ KLAPKY <span style="color: red;">off</span><br>
+                ►SPEED LIMIT / OBMEDZOVAČ RÝCHLOSTI<br>
+                ►POP BANG<br>
+                ►HOT START / HORÚCE ŠTARTY<br>
+                ►CHIPTUNING Auto STAGE 1,2,3,4<br>
+                ►VYPNUTIE PÁSOV<br>
+                ►NAHRANIE ORIGINÁLNEHO SOFTVÉRU<br>
+                ►Reprogramácia jednotiek<br>
+                ►Klonovanie jednotiek<br>
+                ►On-line kódovanie<br>
+                ►On-line programovanie
+            </p>
+        </div>
+    </div>
+
+    <div id="modal-3" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Kódovanie</h2>
+            <p class="text-gray-700 mb-4">
+                ►Odblokovanie videa počas jazdy<br>
+                ►Deaktivácia štart-stop systému<br>
+                ►Pretočenie ručičiek pri zapínaní (Needle Swap)<br>
+                ►Aktivácia zadného denného svietenia (DRL)<br>
+                ►Vypnutie upozornenia na bezpečnostné pásy<br>
+                ►CarPlay aktivácia<br>
+                ►Zapnutie denného svietenia<br>
+                ►Zamknutie naštartovaného vozidla<br>
+                ►AMG menu<br>
+                ►Podsvietenie interiéru / nahratie viacerých farieb<br>
+                ►LAP Timer<br>
+                ►Úprava teploty vyhrievaných sedadiel<br>
+                ►Vypnutie zadného stierača pri zaradení prevodového stupňa "R"<br>
+                ►Zapnutie predných hmloviek pri zaradení prevodového stupňa "R"<br>
+                ►Zapnutie maximálneho osvetlenia pri zaradení stupňa "R"<br>
+                ►A iné
+            </p>
+        </div>
+    </div>
+
+    <div id="modal-4" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Odťahová služba</h2>
+            <p class="text-gray-700 mb-4">
+                ►Trojnapravový vozík celoplošný 5,2m, elektrický navijak na 5,5t<br>
+                ►Čistá váha nákladu 2,6 T
+            </p>
+        </div>
+    </div>
+
+    <div id="modal-5" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
+            <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
+            <h2 class="text-2xl font-bold mb-4">Zabezpečenie STK/EK</h2>
+            <p class="text-gray-700 mb-4">
+                ►Kontrola a doplnenie chladiacich kvapalín<br>
+                ►Prípadné poruchy - oprava vozidla
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu + overlay
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileOverlay = document.getElementById('mobile-overlay');
+
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('open');
+            mobileOverlay.classList.toggle('show');
+        }
+
+        menuBtn.addEventListener('click', toggleMobileMenu);
+
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', toggleMobileMenu);
+        }
+
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                mobileOverlay.classList.remove('show');
+            });
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Modal open
+        document.querySelectorAll('.open-modal').forEach(button => {
+            button.addEventListener('click', e => {
+                e.preventDefault();
+                const id = button.getAttribute('data-modal');
+                document.getElementById(id)?.classList.remove('hidden');
+            });
+        });
+
+        // Modal close - X
+        document.querySelectorAll('.close-modal').forEach(button => {
+            button.addEventListener('click', () => {
+                button.closest('.fixed')?.classList.add('hidden');
+            });
+        });
+
+        // Modal close - pozadina + Esc
+        document.querySelectorAll('.fixed.inset-0').forEach(modal => {
+            modal.addEventListener('click', e => {
+                if (e.target === modal) modal.classList.add('hidden');
+            });
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                document.querySelectorAll('.fixed.inset-0:not(.hidden)').forEach(m => m.classList.add('hidden'));
+            }
+        });
+
+        // Lightbox za galeriju
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxClose = document.querySelector('.lightbox-close');
+
+        document.querySelectorAll('#gallery-grid img').forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src;
+                lightbox.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+
+        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+
+        lightbox.addEventListener('click', e => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape' && lightbox.classList.contains('show')) closeLightbox();
+        });
+
+        // Typewriter
+        const text = "Váš komplexný partner pre starostlivosť o Vaše vozidlo!";
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                document.getElementById("typewriter").innerHTML += text.charAt(i);
+                i++;
+                setTimeout(typeWriter, 70);
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            typeWriter();
+        });
+
+        setInterval(() => {
+            const cursor = document.getElementById("cursor");
+            if (cursor) cursor.style.opacity = cursor.style.opacity === "0" ? "1" : "0";
+        }, 500);
+
+        // ────────────────────────────────────────────────
+        //       PAMETNA GALERIJA – 6 SLUKA + PRIKAŽI VIŠE / SAKRIJ
+        // ────────────────────────────────────────────────
+
+        const galleryGrid = document.getElementById('gallery-grid');
+        const toggleBtn = document.getElementById('toggle-gallery-btn');
+
+        // Lista svih slika
+        const allImages = [
+            '1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp',
+            '7.webp', '8.webp', '9.webp', '10.webp', '11.webp', '12.webp',
+            '13.webp', '14.webp', '15.webp', '16.webp', '17.webp', '18.webp',
+            '19.webp', '20.webp', '21.webp', '22.webp'
+        ];
+
+        const initialCount = 6;   // Početno prikazanih slika
+        let isExpanded = false;   // Da li je galerija proširena
+
+        // Funkcija za prikaz slika
+        function renderGallery(showAll = false) {
+            galleryGrid.innerHTML = ''; // Očisti grid
+
+            const count = showAll ? allImages.length : initialCount;
+
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'overflow-hidden rounded-lg shadow-md cursor-zoom-in';
+
+                const img = document.createElement('img');
+                img.src = allImages[i];
+                img.alt = `Gallery ${i + 1}`;
+                img.loading = 'lazy';
+                img.className = 'w-full h-64 object-cover hover:scale-110 transition duration-500';
+
+                div.appendChild(img);
+                galleryGrid.appendChild(div);
+            }
+
+            // Ažuriraj dugme
+            if (showAll) {
+                toggleBtn.innerHTML = 'Menej <i class="fas fa-chevron-up ml-2"></i>';
+            } else {
+                toggleBtn.innerHTML = 'Viac <i class="fas fa-chevron-down ml-2"></i>';
+            }
+        }
+
+        // Početno prikazivanje
+        renderGallery(false);
+
+        // Klik na dugme
+        toggleBtn.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            renderGallery(isExpanded);
+        });
+    </script>
+
+</body>
+</html>
