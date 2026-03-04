@@ -30,13 +30,6 @@
     <!-- Figtree font -->
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="favicon.ico" type="image/x-icon">
-    <!-- Figtree font -->
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
     <script>
         tailwind.config = {
             theme: {
@@ -105,11 +98,11 @@
             pointer-events: auto;
         }
 
-        /* Lightbox za galeriju */
+        /* Lightbox */
         .lightbox {
             position: fixed;
             inset: 0;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.92);
             z-index: 1000;
             display: none;
             align-items: center;
@@ -125,27 +118,32 @@
             max-width: 95vw;
             max-height: 95vh;
             object-fit: contain;
-            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-            transition: transform 0.3s ease;
+            box-shadow: 0 0 60px rgba(0, 0, 0, 0.9);
+            transition: opacity 0.35s ease, transform 0.4s ease;
+            opacity: 0;
+        }
+
+        .lightbox img.visible {
+            opacity: 1;
         }
 
         .lightbox img:hover {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
 
         .lightbox-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
+            top: 30px;
+            right: 40px;
             color: white;
-            font-size: 50px;
+            font-size: 60px;
             cursor: pointer;
-            text-shadow: 0 0 10px black;
-            transition: transform 0.2s;
+            text-shadow: 0 0 12px black;
+            transition: transform 0.25s;
         }
 
         .lightbox-close:hover {
-            transform: scale(1.2);
+            transform: scale(1.25);
         }
 
         #gallery img {
@@ -326,7 +324,7 @@
         </div>
     </section>
 
-    <!-- About Section – sve centrirano -->
+    <!-- About Section -->
     <section id="about" class="py-20 bg-gray-100">
         <div class="container mx-auto px-6">
             <div class="text-center max-w-4xl mx-auto">
@@ -378,7 +376,7 @@
         </div>
     </section>
 
-    <!-- Gallery – pametna verzija sa 6 slika + Prikaži više / Sakrij -->
+    <!-- Gallery -->
     <section id="gallery" class="py-16">
         <div class="container mx-auto px-4">
             <div class="text-center max-w-4xl mx-auto">
@@ -389,14 +387,12 @@
                 </p>
             </div>
 
-            <!-- Grid za slike -->
             <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
 
-            <!-- Dugme -->
             <div class="text-center mt-10">
                 <button id="toggle-gallery-btn"
                     class="bg-primary hover:bg-primary/90 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300 flex items-center mx-auto">
-                    Prikaži više
+                    Viac
                     <i class="fas fa-chevron-down ml-2"></i>
                 </button>
             </div>
@@ -416,7 +412,6 @@
 
             <div class="max-w-5xl mx-auto">
                 <div class="bg-gray-800/80 backdrop-blur-sm p-10 md:p-12 rounded-2xl shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 border border-gray-700">
-                    <!-- Leva strana -->
                     <div class="text-center md:text-left space-y-10 flex flex-col justify-center">
                         <div class="flex items-start justify-center md:justify-start gap-6">
                             <div class="text-accent text-3xl mt-1 flex-shrink-0">
@@ -446,7 +441,6 @@
                         </div>
                     </div>
 
-                    <!-- Desna strana -->
                     <div class="text-center md:text-left space-y-10 flex flex-col justify-center">
                         <div class="flex items-start justify-center md:justify-start gap-6">
                             <div class="text-accent text-3xl mt-1 flex-shrink-0">
@@ -495,13 +489,13 @@
         </div>
     </footer>
 
-    <!-- Lightbox za galeriju -->
+    <!-- Lightbox -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close">×</span>
         <img id="lightbox-img" src="" alt="Povećana slika">
     </div>
 
-    <!-- Modali (isti kao prije) -->
+    <!-- Modali -->
     <div id="modal-0" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-lg shadow-lg max-w-lg w-full p-6 relative">
             <button class="absolute top-2 right-3 text-gray-500 hover:text-red-500 close-modal">×</button>
@@ -643,14 +637,13 @@
             });
         });
 
-        // Modal close - X
+        // Modal close
         document.querySelectorAll('.close-modal').forEach(button => {
             button.addEventListener('click', () => {
                 button.closest('.fixed')?.classList.add('hidden');
             });
         });
 
-        // Modal close - pozadina + Esc
         document.querySelectorAll('.fixed.inset-0').forEach(modal => {
             modal.addEventListener('click', e => {
                 if (e.target === modal) modal.classList.add('hidden');
@@ -663,32 +656,89 @@
             }
         });
 
-        // Lightbox za galeriju
+        // ────────────────────────────────────────────────
+        //          LIGHTBOX + PAMETNA GALERIJA
+        // ────────────────────────────────────────────────
+
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxClose = document.querySelector('.lightbox-close');
 
-        document.querySelectorAll('#gallery-grid img').forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.src;
-                lightbox.classList.add('show');
-                document.body.style.overflow = 'hidden';
-            });
-        });
-
-        function closeLightbox() {
-            lightbox.classList.remove('show');
-            document.body.style.overflow = '';
+        function openLightbox(src) {
+            lightboxImg.src = src;
+            lightbox.classList.add('show');
+            lightboxImg.classList.remove('visible');
+            setTimeout(() => {
+                lightboxImg.classList.add('visible');
+            }, 80);
+            document.body.style.overflow = 'hidden';
         }
 
-        if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+        function closeLightbox() {
+            lightboxImg.classList.remove('visible');
+            setTimeout(() => {
+                lightbox.classList.remove('show');
+                document.body.style.overflow = '';
+            }, 400);
+        }
+
+        lightboxClose?.addEventListener('click', closeLightbox);
 
         lightbox.addEventListener('click', e => {
             if (e.target === lightbox) closeLightbox();
         });
 
         document.addEventListener('keydown', e => {
-            if (e.key === 'Escape' && lightbox.classList.contains('show')) closeLightbox();
+            if (e.key === 'Escape' && lightbox.classList.contains('show')) {
+                closeLightbox();
+            }
+        });
+
+        // Galerija
+        const galleryGrid = document.getElementById('gallery-grid');
+        const toggleBtn = document.getElementById('toggle-gallery-btn');
+
+        const allImages = [
+            '1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp',
+            '7.webp', '8.webp', '9.webp', '10.webp', '11.webp', '12.webp',
+            '13.webp', '14.webp', '15.webp', '16.webp', '17.webp', '18.webp',
+            '19.webp', '20.webp', '21.webp', '22.webp'
+        ];
+
+        const initialCount = 6;
+        let isExpanded = false;
+
+        function renderGallery(showAll = false) {
+            galleryGrid.innerHTML = '';
+
+            const count = showAll ? allImages.length : initialCount;
+
+            for (let i = 0; i < count; i++) {
+                const div = document.createElement('div');
+                div.className = 'overflow-hidden rounded-lg shadow-md cursor-zoom-in';
+
+                const img = document.createElement('img');
+                img.src = allImages[i];
+                img.alt = `Galerija ${i + 1}`;
+                img.loading = 'lazy';
+                img.className = 'w-full h-64 object-cover hover:scale-110 transition duration-500';
+
+                img.addEventListener('click', () => openLightbox(img.src));
+
+                div.appendChild(img);
+                galleryGrid.appendChild(div);
+            }
+
+            toggleBtn.innerHTML = showAll
+                ? 'Manje <i class="fas fa-chevron-up ml-2"></i>'
+                : 'Više <i class="fas fa-chevron-down ml-2"></i>';
+        }
+
+        renderGallery(false);
+
+        toggleBtn.addEventListener('click', () => {
+            isExpanded = !isExpanded;
+            renderGallery(isExpanded);
         });
 
         // Typewriter
@@ -711,61 +761,6 @@
             const cursor = document.getElementById("cursor");
             if (cursor) cursor.style.opacity = cursor.style.opacity === "0" ? "1" : "0";
         }, 500);
-
-        // ────────────────────────────────────────────────
-        //       PAMETNA GALERIJA – 6 SLUKA + PRIKAŽI VIŠE / SAKRIJ
-        // ────────────────────────────────────────────────
-
-        const galleryGrid = document.getElementById('gallery-grid');
-        const toggleBtn = document.getElementById('toggle-gallery-btn');
-
-        // Lista svih slika
-        const allImages = [
-            '1.webp', '2.webp', '3.webp', '4.webp', '5.webp', '6.webp',
-            '7.webp', '8.webp', '9.webp', '10.webp', '11.webp', '12.webp',
-            '13.webp', '14.webp', '15.webp', '16.webp', '17.webp', '18.webp',
-            '19.webp', '20.webp', '21.webp', '22.webp'
-        ];
-
-        const initialCount = 6;   // Početno prikazanih slika
-        let isExpanded = false;   // Da li je galerija proširena
-
-        // Funkcija za prikaz slika
-        function renderGallery(showAll = false) {
-            galleryGrid.innerHTML = ''; // Očisti grid
-
-            const count = showAll ? allImages.length : initialCount;
-
-            for (let i = 0; i < count; i++) {
-                const div = document.createElement('div');
-                div.className = 'overflow-hidden rounded-lg shadow-md cursor-zoom-in';
-
-                const img = document.createElement('img');
-                img.src = allImages[i];
-                img.alt = `Gallery ${i + 1}`;
-                img.loading = 'lazy';
-                img.className = 'w-full h-64 object-cover hover:scale-110 transition duration-500';
-
-                div.appendChild(img);
-                galleryGrid.appendChild(div);
-            }
-
-            // Ažuriraj dugme
-            if (showAll) {
-                toggleBtn.innerHTML = 'Menej <i class="fas fa-chevron-up ml-2"></i>';
-            } else {
-                toggleBtn.innerHTML = 'Viac <i class="fas fa-chevron-down ml-2"></i>';
-            }
-        }
-
-        // Početno prikazivanje
-        renderGallery(false);
-
-        // Klik na dugme
-        toggleBtn.addEventListener('click', () => {
-            isExpanded = !isExpanded;
-            renderGallery(isExpanded);
-        });
     </script>
 
 </body>
